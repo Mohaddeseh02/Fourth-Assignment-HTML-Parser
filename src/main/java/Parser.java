@@ -12,34 +12,48 @@ public class Parser {
     public List<Country> sortByName(){
         List<Country> sortedByName = new ArrayList<>(countries);
         // Sort countries alphabetically (least)
-        //TODO
+        sortedByName.sort(Comparator.comparing(Country::getName));
         return  sortedByName;
     }
 
     public List<Country> sortByPopulation(){
         List<Country> sortedByPopulation = new ArrayList<>(countries);
         // Sort countries by population (most)
-        //TODO
+        sortedByPopulation.sort(Comparator.comparing(Country::getPopulation).reversed());
         return sortedByPopulation;
     }
 
     public List<Country> sortByArea(){
         List<Country> sortedByArea = new ArrayList<>(countries);
         // Sort countries by area (most)
-        //TODO
+        sortedByArea.sort(Comparator.comparing(Country::getArea).reversed());
         return sortedByArea;
     }
 
     public void setUp() throws IOException {
 
-        //Parse the HTML file using Jsoup
-        //TODO
+        File htmlFile = new File( "C:/Users/hp/Desktop/AP/Fourth-Assignment-HTML-Parser/src/Resources/country-list.html");
 
-        // Extract data from the HTML
-        //TODO
 
-        // Iterate through each country div to extract country data
-        //TODO
+        Document doc = Jsoup.parse(htmlFile, "UTF-8");
+
+        Elements countryDivs = doc.select(".country");
+
+
+
+
+        for(Element div : countryDivs) {
+
+            String name = div.select(".country-name").text();
+            String capital = div.select(".country-capital").text();
+
+            int population = Integer.parseInt(div.select(".country-population").text());
+
+            double area = Double.parseDouble(div.select(".country-area").text());
+
+            Country country = new Country(name, capital, population, area);
+            countries.add(country);
+        }
     }
 
     public static void main(String[] args) {
